@@ -5,7 +5,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 380px;
+  margin-bottom: 610px;
 }
 
 div.page-header {
@@ -23,7 +23,7 @@ p.proj-desc {
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 380px;
+  min-height: 380px;
   background-color: #f5f5f5;
   font-size: 16px
 }
