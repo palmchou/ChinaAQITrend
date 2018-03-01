@@ -38,13 +38,13 @@ footer.footer li span {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 900px;
+  margin-bottom: 920px;
 }
 
 @media (min-width: 768px) {
   body {
     /* Margin bottom by footer height */
-    margin-bottom: 660px;
+    margin-bottom: 680px;
   }
 }
 
@@ -52,6 +52,6 @@ body {
 @media (min-width: 992px) {
   body {
     /* Margin bottom by footer height */
-    margin-bottom: 480px;
+    margin-bottom: 500px;
   }
 }
