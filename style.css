@@ -3,10 +3,7 @@ html {
   min-height: 100%;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 610px;
-}
+
 
 div.page-header {
   text-align: center;
@@ -36,4 +33,25 @@ h4.footer-header {
 
 footer.footer li span {
   background-color: #d82424;
+}
+
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 900px;
+}
+
+@media (min-width: 768px) {
+  body {
+    /* Margin bottom by footer height */
+    margin-bottom: 660px;
+  }
+}
+
+
+@media (min-width: 992px) {
+  body {
+    /* Margin bottom by footer height */
+    margin-bottom: 480px;
+  }
 }
