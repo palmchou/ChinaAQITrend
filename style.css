@@ -33,3 +33,7 @@ h4.footer-header {
   font-weight: bold;
   margin-top: 20px;
 }
+
+footer.footer li span {
+  background-color: #d82424;
+}
