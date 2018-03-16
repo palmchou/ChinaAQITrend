@@ -90,7 +90,7 @@ function loaded(err, cn, _aqi_data) {
         .enter().append("path")
         .attr("d", path);
 
-    // svg.call(zoom);
+    svg.call(zoom);
     // 'pm25', 'pm10', 'o3', 'no2', 'so2', 'co'
     aqi_data = _aqi_data;
     render_color();
@@ -113,21 +113,10 @@ var idx = 0;
 // setInterval(function () {
 //     slider.value(idx % 25);
 //     slider();
-//     reset_cur_ym(slider.value())
-//     // cur_ym = ym_list[idx % 25];
-//     // render_color();
-//     // console.log(cur_ym);
+//     reset_cur_ym(slider.value());
 //     idx += 1;
 // }, 1000);
 
-// d3.select('#slider_holder').call(sliderFactory()
-//     .ticks(12)
-//     .scale(true)
-//     .range([0, 24])
-//     .width(760)
-//     .label(true)
-//     .step(1)
-// );
 var slider = sliderFactory();
 d3.select('#slider_holder').call(slider
     .height(70)

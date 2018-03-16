@@ -8,6 +8,20 @@ This is a geospatial data visualization for Air Quality Index(AQI)
 ### Live Demo
 [Here](https://palmchou.github.io/ChinaAQITrend/) is the live demo of this project.
 
+### TODO
+- [x] data processing
+- [x] topojson preparation
+- [x] color rendering
+- [x] add slider
+- [x] zoom & drag on the map
+- [x] slider autopaly
+- [ ] map title
+- [ ] add county info properties to topo json file
+- [ ] add tooltip for map
+- [ ] create legend for color
+- [ ] line chart
+
+
 ### Data sources
 - [Harvard CGA China Air Quality Index Archive](http://aqi.cga.harvard.edu/china/about/)
 - [Geojson of China](http://www.ourd3js.com/wordpress/739/)
