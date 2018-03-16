@@ -1,0 +1,56 @@
+.sliderAxis text{
+  font-size: 16px;
+  fill: #b8b1a9;
+  font-weight: 400;
+}
+.sliderAxis line{
+  fill: none;
+  stroke: #b8b1a9;
+  stroke-width: 1px;
+}
+.sliderAxis .domain{
+  fill: none;
+  stroke: none;
+}
+
+.track,
+.track-inset,
+.track-overlay {
+  /*stroke-linecap: round;*/
+}
+
+.track {
+  stroke: #b8b1a9;
+  stroke-width: 4px;
+  cursor: pointer;
+}
+
+/*.track-inset {
+  stroke: #ddd;
+  stroke-width: 50px;
+}*/
+
+.track-overlay {
+  stroke: #A5526A;
+  stroke-width: 4px;
+}
+
+.handle {
+  fill: #ffffff;
+  stroke: #A5526A;
+  stroke-width: 4px;
+  cursor: pointer;
+}
+
+g.handle rect.label {
+  display: inline;
+  fill: #b8b1a9;
+  stroke: none;
+}
+.labelText {
+  fill: #ffffff;
+  stroke: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-anchor: middle;
+}

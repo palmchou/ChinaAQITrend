@@ -3,17 +3,24 @@
 <head>
   <meta charset="utf-8">
   <title>Air Quality Trend in China</title>
-  <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
   <!--		<script src="https://d3js.org/topojson.v1.min.js"></script>-->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="viz.css"/>
+  <link rel="stylesheet" href="sliders.css"/>
+  <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+  <script src="//d3js.org/topojson.v1.min.js"></script>
 </head>
 <body>
 <div class="container">
   <div class="row">
     <div class="page-header">
       <h1>Air Quality Trend in China</h1>
+    </div>
+    <div id="visualization"></div>
+    <div id="slider_holder" class="holder">
+
     </div>
     <p class="proj-desc">
       From 2008, the air quality in China had came to public attention and people were aware of its affection to heath.
@@ -26,7 +33,7 @@
       Quality is a new idea and it's meaningful to 1.4 billion people in China who may not aware the significance
       of the harmful pollution.
     </p>
-    <img src="visu_layout.jpg" class="img-responsive" alt="Responsive image">
+    <!--<img src="visu_layout.jpg" class="img-responsive" alt="Responsive image">-->
   </div>
 </div>
 <footer class="footer">
@@ -163,7 +170,10 @@
     animation: octocat-wave 560ms ease-in-out
   }
 }</style>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="slider.js"></script>
+<script src="viz.js"></script>
 </body>
 </html>
