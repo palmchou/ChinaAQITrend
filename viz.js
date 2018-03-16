@@ -1,7 +1,7 @@
 //Define Margin
-var margin = {left: 85, right: 85, top: 0, bottom: 0},
-    width = 1170 - margin.left - margin.right,
-    height = 520 - margin.top - margin.bottom;
+var margin = {left: 60, right: 30, top: 20, bottom: 0},
+    width = 740 - margin.left - margin.right,
+    height = 540 - margin.top - margin.bottom;
 
 //Define SVG
 var svg = d3.select("#visualization")
@@ -11,11 +11,29 @@ var svg = d3.select("#visualization")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// for line chart
+var lc_margin = {left: 20, right: 20, top: 20, bottom: 0},
+    lc_width = 430 - margin.left - margin.right,
+    lc_height = 280 - margin.top - margin.bottom;
+
+var linechart_svg = d3.select("#visualization")
+    .append("svg")
+    .attr("width", lc_width + lc_margin.left + lc_margin.right)
+    .attr("height", lc_height + lc_margin.top + lc_margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + lc_margin.left + "," + lc_margin.top + ")");
+
 var geo_map = svg.append("g")
     .attr("class", 'geo-map');
 
 var counties = geo_map.append("g")
     .attr("class", "counties");
+
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+var map_title;
 
 var path = d3.geoPath();
 
@@ -28,6 +46,7 @@ function zoomed() {
 }
 
 var parseTime = d3.timeParse("%Y%m");
+var formatTime = d3.timeFormat("%b %Y");
 
 // prepare the aqi_data table
 var aqi_data;
@@ -43,6 +62,8 @@ function idx_to_ym(i) {
 for (var i = 0; i < 25; i++) {
     ym_list.push(idx_to_ym(i));
 }
+
+var cur_ym = ym_list[0];
 
 var AQI_colorScheme = ['#00E400', '#FFFF00', '#FF7E00', '#FF0000', '#8f3f97', '#7E0023'];
 
@@ -65,8 +86,6 @@ function AQI_colorScale(aqi) {
     }
 }
 
-var cur_ym = ym_list[0];
-
 function render_color() {
     var data = aqi_data[cur_ym];
     counties.selectAll("path")
@@ -75,13 +94,39 @@ function render_color() {
         });
 }
 
+var pollutant_names = ['PM2.5', 'PM10', 'O3', 'NO2', 'SO2', 'CO'];
+
+function getTooltipHtml(data) {
+    // console.log(data);
+    var out = "";
+    out += data.properties.name + '<br>';
+    out += 'AQI: ' + aqi_data[cur_ym][data.properties.id][6] + '<br>';
+    for (var i = 0; i < 6; i++ ) {
+        out += pollutant_names[i] + ': ' + aqi_data[cur_ym][data.properties.id][i] + '<br>';
+    }
+    return out
+}
+
 function loaded(err, cn, _aqi_data) {
     if (err) return console.error(err);
 
     counties.selectAll("path")
         .data(topojson.feature(cn, cn.objects.counties).features)
         .enter().append("path")
-        .attr("d", path);
+        .attr("d", path)
+        .on("mouseover", function (d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(getTooltipHtml(d))
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+        })
+        .on("mouseout", function (d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
 
     geo_map.append("g")
         .attr("class", "provinces")
@@ -89,6 +134,12 @@ function loaded(err, cn, _aqi_data) {
         .data(topojson.feature(cn, cn.objects.provinces).features)
         .enter().append("path")
         .attr("d", path);
+
+    map_title = svg.append("text")
+        .attr("class", "map-title noselect")
+        .attr("x", width / 2)
+        .attr("y", 10)
+        .text("Air Quality Index Map, Feb. 2014");
 
     svg.call(zoom);
     // 'pm25', 'pm10', 'o3', 'no2', 'so2', 'co'
@@ -101,11 +152,16 @@ d3.queue().defer(d3.json, "counties-merge-topo.json")
     .defer(d3.json, "aqi_for_geo.json")
     .await(loaded);
 
+function set_ym(ym) {
+    cur_ym = ym;
+    render_color();
+    map_title.text("Air Quality Index Map, " + formatTime(parseTime(cur_ym)));
+}
+
 function reset_cur_ym(idx) {
     var new_ym = idx_to_ym(idx);
     if (new_ym !== cur_ym) {
-        cur_ym = new_ym;
-        render_color();
+        set_ym(new_ym);
     }
 }
 
