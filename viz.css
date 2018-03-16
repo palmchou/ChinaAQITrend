@@ -1,0 +1,10 @@
+g.provinces path {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: 0.3;
+}
+
+g.counties path {
+  stroke: #000;
+  stroke-opacity: 0.1;
+}
