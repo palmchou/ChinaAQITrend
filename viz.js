@@ -12,16 +12,51 @@ var svg = d3.select("#visualization")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // for line chart
-var lc_margin = {left: 20, right: 20, top: 20, bottom: 0},
-    lc_width = 430 - margin.left - margin.right,
-    lc_height = 280 - margin.top - margin.bottom;
+var lc_margin = {left: 60, right: 20, top: 20, bottom: 20},
+    lc_width = 430 - lc_margin.left - lc_margin.right,
+    lc_height = 280 - lc_margin.top - lc_margin.bottom,
+    lg_margin = {left: 60, right: 20, top: 20, bottom: 20},
+    legend_height = 260 - lg_margin.top - lg_margin.bottom;
+
 
 var linechart_svg = d3.select("#visualization")
     .append("svg")
     .attr("width", lc_width + lc_margin.left + lc_margin.right)
-    .attr("height", lc_height + lc_margin.top + lc_margin.bottom)
+    .attr("height", lc_height + legend_height + lc_margin.top + lc_margin.bottom + lg_margin.top + lg_margin.bottom)
     .append("g")
     .attr("transform", "translate(" + lc_margin.left + "," + lc_margin.top + ")");
+
+function tweenDashoffsetOn() {
+    const l = this.getTotalLength(),
+        i = d3.interpolateString("" + l, "0");
+    return function (t) {
+        return i(t);
+    };
+}
+
+function tweenDashoffsetOff() {
+    const l = this.getTotalLength(),
+        i = d3.interpolateString("0", "" + l);
+    return function (t) {
+        return i(t);
+    };
+}
+
+var parseTime = d3.timeParse("%Y%m");
+var formatTime = d3.timeFormat("%b %Y");
+
+var lc_xScale = d3.scaleTime().range([0, lc_width]).domain([parseTime("201402"), parseTime("201602")]),
+    lc_yScale = d3.scaleLinear().rangeRound([lc_height, 0]).domain([0, 300]);
+
+var line = d3.line()
+    .curve(d3.curveBasis) // interpolate the curve
+    .x(function (d) {
+        return lc_xScale(d.year);
+    })
+    .y(function (d) {
+        return lc_yScale(d.aqi);
+    });
+
 
 var geo_map = svg.append("g")
     .attr("class", 'geo-map');
@@ -44,9 +79,6 @@ var zoom = d3.zoom()
 function zoomed() {
     geo_map.attr("transform", d3.event.transform);
 }
-
-var parseTime = d3.timeParse("%Y%m");
-var formatTime = d3.timeFormat("%b %Y");
 
 // prepare the aqi_data table
 var aqi_data;
@@ -119,13 +151,18 @@ function loaded(err, cn, _aqi_data) {
                 .duration(200)
                 .style("opacity", .9);
             tooltip.html(getTooltipHtml(d))
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
+                .style("left", (d3.event.pageX + 4) + "px")
+                .style("top", (d3.event.pageY + 4) + "px");
+            d3.select(this).attr("class", "highlight");
         })
         .on("mouseout", function (d) {
             tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
+            d3.select(this).attr("class", "");
+        })
+        .on("click", function (d) {
+            draw_line(d.properties.id);
         });
 
     geo_map.append("g")
@@ -145,6 +182,29 @@ function loaded(err, cn, _aqi_data) {
     // 'pm25', 'pm10', 'o3', 'no2', 'so2', 'co'
     aqi_data = _aqi_data;
     render_color();
+
+
+    linechart_svg.append("g")
+        .attr("class", "line-chart-lines");
+
+    // for line chart
+    linechart_svg.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform", "translate(0," + lc_height + ")")
+        .call(d3.axisBottom(lc_xScale));
+
+    linechart_svg.append("g")
+        .attr("class", "axis axis--y")
+        .call(d3.axisLeft(lc_yScale))
+        .append("text")
+        .text("Air Quality Index")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -(lc_height / 2))
+        .attr("dy", "-3em")
+        .attr("fill", "black")
+        .style("text-anchor", "middle")
+        // .attr("font-weight", "bold")
+        .attr("font-size", "12px");
 }
 
 
@@ -165,6 +225,43 @@ function reset_cur_ym(idx) {
     }
 }
 
+function draw_line(ac_id) {
+    var line_data = [];
+    for (var i = 0; i < 25; i++) {
+        var ym = idx_to_ym(i);
+        line_data.push({
+            year: parseTime(ym),
+            aqi: aqi_data[ym][ac_id][6]
+        });
+    }
+    console.log(line_data);
+    var lines = linechart_svg.selectAll(".line-chart-lines");
+    lines.selectAll("path").remove();
+
+    lines.append("path")
+        .datum(line_data)
+        .attr("class", "line")
+        .attr("d", function (d) {
+            return line(d);
+        })
+        .attr("fill", "none")
+        .style("stroke", function (d) {
+            return "#000";
+        });
+
+    function initDash() {
+        d3.select(this)
+            .attr("stroke-dasharray", this.getTotalLength() + "," + this.getTotalLength())
+            .attr("stroke-dashoffset", "" + this.getTotalLength());
+    }
+
+    var paths = lines.select("path")
+        .each(initDash)
+        .transition()
+        .duration(2000)
+        .attrTween("stroke-dashoffset", tweenDashoffsetOn);
+}
+
 var idx = 0;
 // setInterval(function () {
 //     slider.value(idx % 25);
@@ -172,6 +269,10 @@ var idx = 0;
 //     reset_cur_ym(slider.value());
 //     idx += 1;
 // }, 1000);
+
+function reset_zoom() {
+    svg.call(zoom.transform, d3.zoomIdentity);
+}
 
 var slider = sliderFactory();
 d3.select('#slider_holder').call(slider

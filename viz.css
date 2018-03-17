@@ -9,6 +9,10 @@ g.counties path {
   stroke-opacity: 0.1;
 }
 
+g.counties path.highlight {
+  stroke-opacity: 0.9;
+}
+
 /*Add Tooltip Type here*/
 div.tooltip {
   position: absolute;
@@ -27,4 +31,8 @@ text.map-title {
   text-anchor: middle;
   font-size: 20px;
   opacity: 0.9;
+}
+
+#slider_holder {
+  margin-bottom: 20px;
 }
