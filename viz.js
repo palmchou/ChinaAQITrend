@@ -262,13 +262,24 @@ function draw_line(ac_id) {
         .attrTween("stroke-dashoffset", tweenDashoffsetOn);
 }
 
-var idx = 0;
-// setInterval(function () {
-//     slider.value(idx % 25);
-//     slider();
-//     reset_cur_ym(slider.value());
-//     idx += 1;
-// }, 1000);
+var cur_ap_id = null;
+
+function auto_play_on() {
+    var idx = 0;
+    cur_ap_id = setInterval(function () {
+        slider.value(idx % 25);
+        slider();
+        reset_cur_ym(slider.value());
+        idx += 1;
+    }, 800);
+}
+
+function auto_play_off() {
+    if (cur_ap_id) {
+        clearInterval(cur_ap_id);
+        cur_ap_id = null;
+    }
+}
 
 function reset_zoom() {
     svg.call(zoom.transform, d3.zoomIdentity);
