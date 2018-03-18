@@ -226,6 +226,13 @@ function reset_cur_ym(idx) {
 }
 
 function draw_line(ac_id) {
+
+    function initDash() {
+        d3.select(this)
+            .attr("stroke-dasharray", this.getTotalLength() + "," + this.getTotalLength())
+            .attr("stroke-dashoffset", "" + this.getTotalLength());
+    }
+
     var line_data = [];
     for (var i = 0; i < 25; i++) {
         var ym = idx_to_ym(i);
@@ -234,9 +241,14 @@ function draw_line(ac_id) {
             aqi: aqi_data[ym][ac_id][6]
         });
     }
-    console.log(line_data);
+
     var lines = linechart_svg.selectAll(".line-chart-lines");
-    lines.selectAll("path").remove();
+
+    lines.selectAll("path")
+        .transition()
+        .duration(1000)
+        .attrTween("stroke-dashoffset", tweenDashoffsetOff)
+        .remove();
 
     lines.append("path")
         .datum(line_data)
@@ -247,15 +259,7 @@ function draw_line(ac_id) {
         .attr("fill", "none")
         .style("stroke", function (d) {
             return "#000";
-        });
-
-    function initDash() {
-        d3.select(this)
-            .attr("stroke-dasharray", this.getTotalLength() + "," + this.getTotalLength())
-            .attr("stroke-dashoffset", "" + this.getTotalLength());
-    }
-
-    var paths = lines.select("path")
+        })
         .each(initDash)
         .transition()
         .duration(2000)
