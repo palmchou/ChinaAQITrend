@@ -1,0 +1,32 @@
+[
+  {
+    "level": "Hazardous",
+    "range": [301, 500],
+    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+  },
+  {
+    "level": "Very Unhealthy",
+    "range": [201, 300],
+    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+  },
+  {
+    "level": "Unhealthy",
+    "range": [151, 200],
+    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+  },
+  {
+    "level": "Unhealthy for Sensitive Groups",
+    "range": [101, 150],
+    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+  },
+  {
+    "level": "Moderate",
+    "range": [51, 100],
+    "meaning": "Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution."
+  },
+  {
+    "level": "Good",
+    "range": [0, 50],
+    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+  }
+]

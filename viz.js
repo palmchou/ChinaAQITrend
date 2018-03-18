@@ -12,10 +12,10 @@ var svg = d3.select("#visualization")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // for line chart
-var lc_margin = {left: 60, right: 20, top: 20, bottom: 20},
+var lc_margin = {left: 60, right: 20, top: 50, bottom: 20},
     lc_width = 430 - lc_margin.left - lc_margin.right,
     lc_height = 280 - lc_margin.top - lc_margin.bottom,
-    lg_margin = {left: 60, right: 20, top: 20, bottom: 20},
+    lg_margin = {left: 10, right: 20, top: 20, bottom: 20},
     legend_height = 260 - lg_margin.top - lg_margin.bottom;
 
 
@@ -68,7 +68,7 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var map_title;
+var map_title, linechart_title;
 
 var path = d3.geoPath();
 
@@ -139,7 +139,7 @@ function getTooltipHtml(data) {
     return out
 }
 
-function loaded(err, cn, _aqi_data) {
+function loaded(err, cn, _aqi_data, aqi_desc) {
     if (err) return console.error(err);
 
     counties.selectAll("path")
@@ -173,7 +173,7 @@ function loaded(err, cn, _aqi_data) {
         .attr("d", path);
 
     map_title = svg.append("text")
-        .attr("class", "map-title noselect")
+        .attr("class", "viz-title map-title noselect")
         .attr("x", width / 2)
         .attr("y", 10)
         .text("Air Quality Index Map, Feb. 2014");
@@ -203,13 +203,73 @@ function loaded(err, cn, _aqi_data) {
         .attr("dy", "-3em")
         .attr("fill", "black")
         .style("text-anchor", "middle")
-        // .attr("font-weight", "bold")
         .attr("font-size", "12px");
+
+    linechart_svg.append("text")
+        .attr("class", "viz-title linechart-title noselect")
+        .attr("x", lc_width / 2)
+        .attr("y", -22)
+        .text("Air Quality Trend");
+
+    linechart_title = linechart_svg.append("text")
+        .attr("class", "viz-title linechart-title noselect")
+        .attr("x", lc_width / 2)
+        .attr("y", -6)
+        .text("City name");
+
+
+    // reference
+    // var legendRectSize = 18;
+    // var legendSpacing = 4;
+    // var legend = svg.selectAll('.legend')
+    //     .data(color.domain())
+    //     .enter()
+    //     .append('g')
+    //     .attr('class', 'legend')
+    //     .attr('transform', function(d, i) {
+    //         var height = legendRectSize + legendSpacing;
+    //         var offset = -.5 * height * color.domain().length/2;
+    //         //var horz = 52.5 * legendRectSize;
+    //         var horz = 48 * legendRectSize - 55;
+    //         var vert = i * height - offset; //add more here to change y value
+    //         return 'translate(' + horz + ',' + vert + ')';
+    //     });
+
+    // create the map legend
+
+    // ==== legend ====
+    var legendRectSize = 36;
+    var legendSpacing = 4;
+
+    var legend = linechart_svg.selectAll('.legend')
+        .data(aqi_desc)
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .attr('transform', function(d, i) {
+            var height = legendRectSize + legendSpacing;
+            var x = -lc_margin.left + lg_margin.left;
+            var y = i * height + lc_height + lc_margin.bottom + lg_margin.top;
+            return 'translate(' + x + ',' + y + ')';
+        });
+
+    legend.append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', function (d) {
+            return AQI_colorScale(d.range[1])
+        });
+
+    legend.append('text')
+        .text(function(d) {return "" + d.range[0] + " - " + d.range[1]})
+        .attr('x', legendRectSize + legendSpacing)
+        .attr('y', (legendRectSize) / 2 + 6);
 }
 
 
 d3.queue().defer(d3.json, "counties-merge-topo.json")
     .defer(d3.json, "aqi_for_geo.json")
+    .defer(d3.json, "aqi_desc.json")
     .await(loaded);
 
 function set_ym(ym) {

@@ -27,11 +27,19 @@ div.tooltip {
   pointer-events: none;
 }
 
-text.map-title {
+text.viz-title {
   text-anchor: middle;
-  font-size: 20px;
   opacity: 0.9;
 }
+
+text.map-title {
+  font-size: 20px;
+}
+
+text.linechart-title {
+  font-size: 14px;
+}
+
 
 #slider_holder {
   margin-bottom: 20px;
