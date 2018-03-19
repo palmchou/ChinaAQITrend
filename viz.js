@@ -18,7 +18,6 @@ var lc_margin = {left: 60, right: 20, top: 50, bottom: 20},
     lg_margin = {left: 10, right: 20, top: 20, bottom: 20},
     legend_height = 260 - lg_margin.top - lg_margin.bottom;
 
-
 var linechart_svg = d3.select("#visualization")
     .append("svg")
     .attr("width", lc_width + lc_margin.left + lc_margin.right)
@@ -330,12 +329,14 @@ var cur_ap_id = null;
 
 function auto_play_on() {
     var idx = 0;
-    cur_ap_id = setInterval(function () {
+    function apply_next_ym() {
         slider.value(idx % 25);
         slider();
         reset_cur_ym(slider.value());
         idx += 1;
-    }, 800);
+    }
+    apply_next_ym();
+    cur_ap_id = setInterval(apply_next_ym, 800);
 }
 
 function auto_play_off() {
@@ -352,7 +353,7 @@ function reset_zoom() {
 var slider = sliderFactory();
 d3.select('#slider_holder').call(slider
     .height(70)
-    .width(760)
+    .width(740)
     .margin({
         top: 35,
         right: 40,
@@ -364,3 +365,15 @@ d3.select('#slider_holder').call(slider
         reset_cur_ym(d.value());
     }));
 
+$(function() {
+    $('#toggle-autoplay').bootstrapToggle({
+        width: 128
+    })
+        .change(function () {
+            if ($(this).prop('checked')) {
+                auto_play_on();
+            } else {
+                auto_play_off();
+            }
+        });
+});

@@ -9,8 +9,11 @@
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="viz.css"/>
   <link rel="stylesheet" href="sliders.css"/>
+  <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
   <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
   <script src="//d3js.org/topojson.v1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -23,8 +26,11 @@
     </p>
     <div id="visualization"></div>
     <div id="slider_holder" class="holder">
-
     </div>
+    <div id="toggle-autoplay-div">
+      <input id="toggle-autoplay" type="checkbox" data-on="<i class='fa fa-play'></i> AutoPlay On" data-off="<i class='fa fa-pause'></i> AutoPlay Off" data-onstyle="success">
+    </div>
+
     <p class="proj-desc">
       From 2008, the air quality in China had came to public attention and people were aware of its affection to heath.
       The Chinese government had enforced multiple polices trying to reduce the air pollution index since then. So
@@ -174,8 +180,9 @@
   }
 }</style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
 <script src="slider.js"></script>
 <script src="viz.js"></script>
 </body>
