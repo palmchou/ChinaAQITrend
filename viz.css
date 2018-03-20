@@ -53,3 +53,13 @@ text.linechart-title {
   margin-top: 14px;
   margin-left: 6px;
 }
+
+#right-seg {
+  background-color: #efefef;
+}
+
+.line {
+  fill: none;
+  stroke: url(#aqi-gradient);
+  stroke-width: 2.5px;
+}

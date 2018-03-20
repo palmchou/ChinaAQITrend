@@ -20,6 +20,7 @@ var lc_margin = {left: 60, right: 20, top: 50, bottom: 20},
 
 var linechart_svg = d3.select("#visualization")
     .append("svg")
+    .attr("id", "right-seg")
     .attr("width", lc_width + lc_margin.left + lc_margin.right)
     .attr("height", lc_height + legend_height + lc_margin.top + lc_margin.bottom + lg_margin.top + lg_margin.bottom)
     .append("g")
@@ -45,10 +46,10 @@ var parseTime = d3.timeParse("%Y%m");
 var formatTime = d3.timeFormat("%b %Y");
 
 var lc_xScale = d3.scaleTime().range([0, lc_width]).domain([parseTime("201402"), parseTime("201602")]),
-    lc_yScale = d3.scaleLinear().rangeRound([lc_height, 0]).domain([0, 300]);
+    lc_yScale = d3.scaleLinear().rangeRound([lc_height, 0]).domain([0, 500]);
 
 var line = d3.line()
-    .curve(d3.curveBasis) // interpolate the curve
+    .curve(d3.curveCatmullRom) // interpolate the curve
     .x(function (d) {
         return lc_xScale(d.year);
     })
@@ -132,7 +133,7 @@ function getTooltipHtml(data) {
     var out = "";
     out += data.properties.name + '<br>';
     out += 'AQI: ' + aqi_data[cur_ym][data.properties.id][6] + '<br>';
-    for (var i = 0; i < 6; i++ ) {
+    for (var i = 0; i < 6; i++) {
         out += pollutant_names[i] + ': ' + aqi_data[cur_ym][data.properties.id][i] + '<br>';
     }
     return out
@@ -185,6 +186,36 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
 
     linechart_svg.append("g")
         .attr("class", "line-chart-lines");
+
+    var lines = linechart_svg.selectAll(".line-chart-lines");
+    lines.append("linearGradient")
+        .attr("id", "aqi-gradient")
+        .attr("gradientUnits", "userSpaceOnUse")
+        .attr("x1", 0).attr("y1", lc_yScale(0))
+        .attr("x2", 0).attr("y2", lc_yScale(500))
+        .selectAll("stop")
+        //   0 -  50, 10%
+        //  50 - 100, 10% - 20%
+        // 100 - 150, 20% - 30%
+        // 150 - 200, 30% - 40%
+        // 200 - 300, 40% - 60%
+        // 300 - 500, 60% - 100%
+        .data([
+            {offset: "0%", color: AQI_colorScheme[0]},
+            {offset: "5%", color: AQI_colorScheme[0]},
+            {offset: "15%", color: AQI_colorScheme[1]},
+            {offset: "25%", color: AQI_colorScheme[2]},
+            {offset: "35%", color: AQI_colorScheme[3]},
+            {offset: "50%", color: AQI_colorScheme[4]},
+            {offset: "80%", color: AQI_colorScheme[5]}
+        ])
+        .enter().append("stop")
+        .attr("offset", function (d) {
+            return d.offset;
+        })
+        .attr("stop-color", function (d) {
+            return d.color;
+        });
 
     // for line chart
     linechart_svg.append("g")
@@ -245,7 +276,7 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
         .enter()
         .append('g')
         .attr('class', 'legend')
-        .attr('transform', function(d, i) {
+        .attr('transform', function (d, i) {
             var height = legendRectSize + legendSpacing;
             var x = -lc_margin.left + lg_margin.left;
             var y = i * height + lc_height + lc_margin.bottom + lg_margin.top;
@@ -260,7 +291,9 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
         });
 
     legend.append('text')
-        .text(function(d) {return "" + d.range[0] + " - " + d.range[1]})
+        .text(function (d) {
+            return "" + d.range[0] + " - " + d.range[1]
+        })
         .attr('x', legendRectSize + legendSpacing)
         .attr('y', (legendRectSize) / 2 + 6);
 }
@@ -315,10 +348,6 @@ function draw_line(ac_id) {
         .attr("d", function (d) {
             return line(d);
         })
-        .attr("fill", "none")
-        .style("stroke", function (d) {
-            return "#000";
-        })
         .each(initDash)
         .transition()
         .duration(2000)
@@ -329,12 +358,14 @@ var cur_ap_id = null;
 
 function auto_play_on() {
     var idx = 0;
+
     function apply_next_ym() {
         slider.value(idx % 25);
         slider();
         reset_cur_ym(slider.value());
         idx += 1;
     }
+
     apply_next_ym();
     cur_ap_id = setInterval(apply_next_ym, 800);
 }
@@ -365,7 +396,7 @@ d3.select('#slider_holder').call(slider
         reset_cur_ym(d.value());
     }));
 
-$(function() {
+$(function () {
     $('#toggle-autoplay').bootstrapToggle({
         width: 128
     })
