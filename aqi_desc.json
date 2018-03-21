@@ -2,22 +2,22 @@
   {
     "level": "Hazardous",
     "range": [301, 500],
-    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+    "meaning": "Health warnings of emergency conditions. The entire population is more likely to be affected."
   },
   {
     "level": "Very Unhealthy",
     "range": [201, 300],
-    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+    "meaning": "Health alert: everyone may experience more serious health effects."
   },
   {
     "level": "Unhealthy",
     "range": [151, 200],
-    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+    "meaning": "Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects."
   },
   {
     "level": "Unhealthy for Sensitive Groups",
     "range": [101, 150],
-    "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+    "meaning": "Members of sensitive groups may experience health effects. The general public is not likely to be affected."
   },
   {
     "level": "Moderate",
@@ -28,5 +28,10 @@
     "level": "Good",
     "range": [0, 50],
     "meaning": "Air quality is considered satisfactory, and air pollution poses little or no risk."
+  },
+  {
+    "level": "Understanding the AQI",
+    "range": [0, 0],
+    "meaning": "The purpose of the AQI is to help you understand what local air quality means to your health. The higher the AQI value, the greater the level of air pollution and the greater the health concern. To make it easier to understand, the AQI is divided into six categories. Each category corresponds to a different level of health concern."
   }
 ]

@@ -18,7 +18,7 @@ This is a geospatial data visualization for Air Quality Index(AQI)
 - [x] map title
 - [ ] add county info properties to topo json file
 - [x] add tooltip for map
-- [ ] create legend for color
+- [x] create legend for color
 - [X] line chart
 - [ ] smoothly reset zoom
 

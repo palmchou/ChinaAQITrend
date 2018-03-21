@@ -68,7 +68,7 @@ var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-var map_title, linechart_title;
+var map_title, linechart_title, foreign_box;
 
 var path = d3.geoPath();
 
@@ -247,32 +247,26 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
         .attr("y", -6)
         .text("City name");
 
-
-    // reference
-    // var legendRectSize = 18;
-    // var legendSpacing = 4;
-    // var legend = svg.selectAll('.legend')
-    //     .data(color.domain())
-    //     .enter()
-    //     .append('g')
-    //     .attr('class', 'legend')
-    //     .attr('transform', function(d, i) {
-    //         var height = legendRectSize + legendSpacing;
-    //         var offset = -.5 * height * color.domain().length/2;
-    //         //var horz = 52.5 * legendRectSize;
-    //         var horz = 48 * legendRectSize - 55;
-    //         var vert = i * height - offset; //add more here to change y value
-    //         return 'translate(' + horz + ',' + vert + ')';
-    //     });
-
-    // create the map legend
-
     // ==== legend ====
-    var legendRectSize = 36;
-    var legendSpacing = 4;
+    var legendRectSize = 34;
+    var legendSpacing = 6;
+
+    function set_legend_desc(idx) {
+        foreign_box.select('#legend-desc-header')
+            .text(aqi_desc[idx].level)
+            .style('color', function () {
+                if (idx < 6) {
+                    return AQI_colorScale(aqi_desc[idx].range[1]);
+                } else {
+                    return 'black';
+                }
+            });
+        foreign_box.select('#legend-desc-content')
+            .text(aqi_desc[idx].meaning);
+    }
 
     var legend = linechart_svg.selectAll('.legend')
-        .data(aqi_desc)
+        .data(aqi_desc.slice(0, 6))
         .enter()
         .append('g')
         .attr('class', 'legend')
@@ -281,7 +275,15 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
             var x = -lc_margin.left + lg_margin.left;
             var y = i * height + lc_height + lc_margin.bottom + lg_margin.top;
             return 'translate(' + x + ',' + y + ')';
+        })
+        .on('mouseover', function (d, i) {
+            set_legend_desc(i);
+        })
+        .on('mouseout', function () {
+            set_legend_desc(6);
         });
+
+    var outline_desc = aqi_desc[6];
 
     legend.append('rect')
         .attr('width', legendRectSize)
@@ -290,12 +292,24 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
             return AQI_colorScale(d.range[1])
         });
 
+
     legend.append('text')
         .text(function (d) {
             return "" + d.range[0] + " - " + d.range[1]
         })
         .attr('x', legendRectSize + legendSpacing)
         .attr('y', (legendRectSize) / 2 + 6);
+
+    foreign_box = linechart_svg.append('foreignObject')
+        .attr('class', 'foreign-box')
+        .attr('x', lg_margin.left + 60).attr('y', lc_height + lg_margin.top + 20)
+        .attr('width', 280).attr('height', 220);
+    foreign_box.append('xhtml:h4')
+        .attr('id', 'legend-desc-header')
+        .text(outline_desc.level);
+    foreign_box.append('xhtml:p')
+        .attr('id', 'legend-desc-content')
+        .text(outline_desc.meaning)
 }
 
 
@@ -384,7 +398,7 @@ function reset_zoom() {
 var slider = sliderFactory();
 d3.select('#slider_holder').call(slider
     .height(70)
-    .width(740)
+    .width(728)
     .margin({
         top: 35,
         right: 40,

@@ -63,3 +63,19 @@ text.linechart-title {
   stroke: url(#aqi-gradient);
   stroke-width: 2.5px;
 }
+
+.foreign-box {
+  text-align:justify;
+  text-justify:auto;
+}
+
+#legend-desc-header {
+  text-align: center;
+  -webkit-text-stroke: 0.6px black;
+  /*text-shadow:*/
+      /*3px 3px 0 #000,*/
+      /*-1px -1px 0 #000,*/
+      /*1px -1px 0 #000,*/
+      /*-1px 1px 0 #000,*/
+      /*1px 1px 0 #000;*/
+}
