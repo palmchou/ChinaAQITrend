@@ -118,6 +118,28 @@ function AQI_colorScale(aqi) {
     }
 }
 
+/**
+ * @return {number}
+ */
+function AQI_to_legend_idx(aqi) {
+    var no_value_idx = 6;
+    if (aqi < 0) {
+        return no_value_idx;
+    } else if (aqi <= 50) {
+        return 5;
+    } else if (aqi <= 100) {
+        return 4;
+    } else if (aqi <= 150) {
+        return 3;
+    } else if (aqi <= 200) {
+        return 2;
+    } else if (aqi <= 300) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 function render_color() {
     var data = aqi_data[cur_ym];
     counties.selectAll("path")
@@ -131,6 +153,7 @@ var pollutant_names = ['PM2.5', 'PM10', 'O3', 'NO2', 'SO2', 'CO'];
 function getTooltipHtml(data) {
     // console.log(data);
     var out = "";
+    out += data.properties.en_name + '<br>';
     out += data.properties.name + '<br>';
     out += 'AQI: ' + aqi_data[cur_ym][data.properties.id][6] + '<br>';
     for (var i = 0; i < 6; i++) {
@@ -154,6 +177,7 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
                 .style("left", (d3.event.pageX + 4) + "px")
                 .style("top", (d3.event.pageY + 4) + "px");
             d3.select(this).attr("class", "highlight");
+            set_legend_desc(AQI_to_legend_idx(aqi_data[cur_ym][d.properties.id][6]));
         })
         .on("mouseout", function (d) {
             tooltip.transition()
@@ -162,8 +186,14 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
             d3.select(this).attr("class", "");
         })
         .on("click", function (d) {
+            linechart_svg.select('#linechart-city-name').text(d.properties.en_name + ' ' + d.properties.name);
             draw_line(d.properties.id);
         });
+
+    counties.on("mouseout", function () {
+        set_legend_desc(6);
+    });
+
 
     geo_map.append("g")
         .attr("class", "provinces")
@@ -242,7 +272,8 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
         .text("Air Quality Trend");
 
     linechart_title = linechart_svg.append("text")
-        .attr("class", "viz-title linechart-title noselect")
+        .attr("class", "viz-title linechart-city-name noselect")
+        .attr("id", "linechart-city-name")
         .attr("x", lc_width / 2)
         .attr("y", -6)
         .text("City name");
@@ -313,7 +344,7 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
 }
 
 
-d3.queue().defer(d3.json, "counties-merge-topo.json")
+d3.queue().defer(d3.json, "counties-1.0-topo.json")
     .defer(d3.json, "aqi_for_geo.json")
     .defer(d3.json, "aqi_desc.json")
     .await(loaded);
