@@ -409,14 +409,20 @@ function draw_line(ac_id) {
 
 var cur_ap_id = null;
 
+function ym_to_idx(ym) {
+    var y = Number(ym.slice(0, 4));
+    var m = Number(ym.slice(4));
+    return (y - 2014) * 12 + m - 2;
+}
+
 function auto_play_on() {
-    var idx = 0;
+
 
     function apply_next_ym() {
+        var idx = ym_to_idx(cur_ym) + 1;
         slider.value(idx % 25);
         slider();
         reset_cur_ym(slider.value());
-        idx += 1;
     }
 
     apply_next_ym();
