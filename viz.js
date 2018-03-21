@@ -155,9 +155,17 @@ function getTooltipHtml(data) {
     var out = "";
     out += data.properties.en_name + '<br>';
     out += data.properties.name + '<br>';
-    out += 'AQI: ' + aqi_data[cur_ym][data.properties.id][6] + '<br>';
+    var aqi_value = aqi_data[cur_ym][data.properties.id][6];
+    if (aqi_value === -1) {
+        aqi_value = 'N/A';
+    }
+    out += "<span class='sp-left'>AQI</span><span class='sp-center'>:</span><span class='sp-right'>" + aqi_value + '</span><br>';
     for (var i = 0; i < 6; i++) {
-        out += pollutant_names[i] + ': ' + aqi_data[cur_ym][data.properties.id][i] + '<br>';
+        var value = aqi_data[cur_ym][data.properties.id][i];
+        if (value === -1) {
+            value = 'N/A';
+        }
+        out += "<span class='sp-left'>" + pollutant_names[i] + "</span><span class='sp-center'>:</span><span class='sp-right'>" + value + '</span><br>';
     }
     return out
 }
@@ -276,7 +284,7 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
         .attr("id", "linechart-city-name")
         .attr("x", lc_width / 2)
         .attr("y", -6)
-        .text("City name");
+        .text("");
 
     // ==== legend ====
     var legendRectSize = 34;

@@ -19,12 +19,24 @@ div.tooltip {
   text-align: center;
   /*width: 180px;*/
   /*height: 28px;*/
-  padding: 2px;
+  padding: 4px;
   font: 12px sans-serif;
   background: lightsteelblue;
   border: 0;
-  border-radius: 8px;
+  border-radius: 4px;
   pointer-events: none;
+  min-width: 80px;
+}
+
+div.tooltip span.sp-left {
+  float:left;
+}
+div.tooltip span.sp-right {
+  float:right;
+}
+div.tooltip span.sp-center {
+  position: absolute;
+  left: 54%;
 }
 
 text.viz-title {
