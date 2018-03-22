@@ -1,0 +1,236 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+div.page-header {
+    text-align: center;
+}
+
+p.proj-desc {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+.created_by a {
+    color: black;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    min-height: 380px;
+    background-color: #f5f5f5;
+    font-size: 16px
+}
+
+h4.footer-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+footer.footer li span {
+    background-color: #d82424;
+}
+
+.footer_column ul {
+    padding-left: 18px;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 840px;
+}
+
+@media (min-width: 768px) {
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 460px;
+    }
+}
+
+.footer-files {
+    font-size: 12px;
+}g.provinces path {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: 0.3;
+}
+
+g.counties path {
+  stroke: #000;
+  stroke-opacity: 0.1;
+}
+
+g.counties path.highlight {
+  stroke-opacity: 0.9;
+}
+
+/*Add Tooltip Type here*/
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  /*width: 180px;*/
+  /*height: 28px;*/
+  padding: 4px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0;
+  border-radius: 4px;
+  pointer-events: none;
+  min-width: 80px;
+}
+
+div.tooltip span.sp-left {
+  float:left;
+}
+div.tooltip span.sp-right {
+  float:right;
+}
+div.tooltip span.sp-center {
+  position: absolute;
+  left: 54%;
+}
+
+text.viz-title {
+  text-anchor: middle;
+  opacity: 0.9;
+}
+
+text.map-title {
+  font-size: 20px;
+}
+
+text.linechart-title {
+  font-size: 14px;
+}
+
+
+#slider_holder {
+  margin-bottom: 20px;
+  max-width: 760px;
+  display: inline-block;
+}
+
+#toggle-autoplay-div {
+  vertical-align: top;
+  display: inline-block;
+  margin-top: 14px;
+  margin-left: 6px;
+}
+
+#right-seg {
+  background-color: #efefef;
+}
+
+.line {
+  fill: none;
+  stroke: url(#aqi-gradient);
+  stroke-width: 2.5px;
+}
+
+.foreign-box {
+  text-align:justify;
+  text-justify:auto;
+}
+
+#legend-desc-header {
+  text-align: center;
+  -webkit-text-stroke: 0.6px black;
+  /*text-shadow:*/
+      /*3px 3px 0 #000,*/
+      /*-1px -1px 0 #000,*/
+      /*1px -1px 0 #000,*/
+      /*-1px 1px 0 #000,*/
+      /*1px 1px 0 #000;*/
+}
+
+div.media h5 {
+  text-align: center;
+  margin-bottom: 0px;;
+}
+
+img.media-object {
+  /*width: 120px;*/
+  height: 128px;
+}
+
+h3.takeaway-header {
+  color: gray;
+}.sliderAxis text{
+  font-size: 16px;
+  fill: #b8b1a9;
+  font-weight: 400;
+}
+.sliderAxis line{
+  fill: none;
+  stroke: #b8b1a9;
+  stroke-width: 1px;
+}
+.sliderAxis .domain{
+  fill: none;
+  stroke: none;
+}
+
+.track,
+.track-inset,
+.track-overlay {
+  /*stroke-linecap: round;*/
+}
+
+.track {
+  stroke: #b8b1a9;
+  stroke-width: 4px;
+  cursor: pointer;
+}
+
+/*.track-inset {
+  stroke: #ddd;
+  stroke-width: 50px;
+}*/
+
+.track-overlay {
+  stroke: #A5526A;
+  stroke-width: 4px;
+}
+
+.handle {
+  fill: #ffffff;
+  stroke: #A5526A;
+  stroke-width: 4px;
+  cursor: pointer;
+}
+
+g.handle rect.label {
+  display: inline;
+  fill: #b8b1a9;
+  stroke: none;
+}
+.labelText {
+  fill: #ffffff;
+  stroke: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-anchor: middle;
+}

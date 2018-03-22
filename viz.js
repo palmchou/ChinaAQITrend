@@ -353,7 +353,7 @@ function loaded(err, cn, _aqi_data, aqi_desc) {
 }
 
 
-d3.queue().defer(d3.json, "counties-1.0-topo.json")
+d3.queue().defer(d3.json, "counties.json")
     .defer(d3.json, "aqi_for_geo.json")
     .defer(d3.json, "aqi_desc.json")
     .await(loaded);
