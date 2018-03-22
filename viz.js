@@ -6,6 +6,7 @@ var margin = {left: 60, right: 30, top: 20, bottom: 0},
 //Define SVG
 var svg = d3.select("#visualization")
     .append("svg")
+    .attr("id", "map-svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
